@@ -1,0 +1,32 @@
+<?php
+
+return [
+    'key' => env('APP_KEY'), // Application key for encryption
+    'debug' => env('APP_DEBUG', true), // Enable or disable debug mode
+
+    'name' => env('APP_NAME', 'Spark'), // Application name
+    'timezone' => env('APP_TIMEZONE', 'UTC'), // Application timezone
+    'locale' => env('APP_LOCALE', 'en'), // Default language
+    'url' => env('APP_URL', 'http://localhost:8080'), // Application URL
+
+    // Directory paths
+    'storage_dir' => dirname(__DIR__) . '/storage', // Storage directory
+    'temp_dir' => dirname(__DIR__) . '/storage/framework/temp', // Temporary files directory
+    'upload_dir' => dirname(__DIR__) . '/storage/app/public', // Public upload directory
+    'views_dir' => dirname(__DIR__) . '/resources/views', // Template directory
+    'locale_dir' => dirname(__DIR__) . '/resources/languages', // Language files directory
+
+    // URL settings
+    'media_url' => '/uploads/', // Media URL
+    'asset_url' => '/assets/', // Asset URL
+
+    // Trusted proxy IPs/CIDRs, e.g. ['10.0.0.0/8', '172.16.0.0/12', '127.0.0.1'].
+    // Use '*' only if your load balancer always overwrites X-Forwarded-For.
+    'trusted_proxies' => array_filter(
+        array_unique(
+            explode(',', env('TRUSTED_PROXIES', ''))
+        )
+    ),
+    // Select cf-connecting-ip only when trusted peers overwrite that header.
+    'trusted_proxy_header' => env('TRUSTED_PROXY_HEADER', 'x-forwarded-for'),
+];
