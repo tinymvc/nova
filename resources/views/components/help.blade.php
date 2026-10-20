@@ -2,6 +2,6 @@
     'text' => null,
 ])
 
-<p {{ $attributes->class(['text-xs text-base-content/60 mt-1']) }}>
+<p {{ $attributes->class(['text-xs muted mt-2 leading-5']) }}>
     {{ $text ?? $slot }}
 </p>

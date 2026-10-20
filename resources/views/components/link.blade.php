@@ -12,14 +12,14 @@
         'secondary' => 'link-secondary',
         'accent' => 'link-accent',
         'neutral' => 'link-neutral',
-        'success' => 'link-success',
-        'warning' => 'link-warning',
-        'error' => 'link-error',
+        'success' => 'text-success-content',
+        'warning' => 'text-warning-content',
+        'error' => 'text-error-content',
         'hover' => 'link-hover',
     ];
 
     $classes = [
-        'link font-medium inline-flex items-center gap-1.5 transition-colors',
+        'link font-medium inline-flex items-center gap-1.5 transition-colors underline-offset-4',
         $variantClasses[$variant] ?? 'link-primary',
     ];
 @endphp

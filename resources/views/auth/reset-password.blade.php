@@ -2,15 +2,13 @@
     @extends('layouts.base')
 @endif
 @section('title')
-    Reset Password · {{ config('app.name', 'Nova') }}
+    Reset Password · {{ config('app.name', 'Spark') }}
 @endsection
 
 @section('content')
     <x-layouts.auth key="reset-password">
-        <span class="grid place-items-center w-11 h-11 rounded-xl bg-secondary text-primary mb-6"><x-icon
-                name="lock" /></span>
-        <h1 data-page-heading tabindex="-1" class="text-3xl font-medium tracking-[-0.045em]">A fresh start.</h1>
-        <p class="muted text-sm leading-6 mt-3 mb-8">Choose a new password for your account.</p>
+        <h1 data-page-heading tabindex="-1" class="text-2xl font-semibold tracking-tight text-center">Reset your password</h1>
+        <p class="muted text-sm leading-6 mt-2 mb-7 text-center">Choose a new password to secure your account.</p>
         <x-form :action="route('password.update')">
             <input type="hidden" name="token" value="{{ $token }}">
             <x-input name="email" type="email" label="Email address" :value="$email" autocomplete="email" required />
@@ -21,7 +19,7 @@
             <x-submit label="Reset password" processing="Resetting password…" class="w-full" />
         </x-form>
         <a href="{{ route('password.request') }}" x-navigate
-            class="text-xs text-primary hover:underline text-center mt-7">Need a new reset link?</a>
+            class="block text-[13px] text-primary hover:underline text-center mt-7">Need a new reset link?</a>
     </x-layouts.auth>
 @endsection
 

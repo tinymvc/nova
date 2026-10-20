@@ -49,7 +49,7 @@
 
         .button {
             display: inline-block;
-            background-color: #4f46e5;
+            background-color: #1a1a1a;
             color: #ffffff !important;
             padding: 12px 28px;
             text-decoration: none;
@@ -69,7 +69,7 @@
 
         .break-word {
             word-break: break-all;
-            color: #4f46e5;
+            color: #1a1a1a;
         }
     </style>
 </head>
@@ -78,7 +78,7 @@
     <div class="wrapper">
         <div class="content">
             <div class="header">
-                <h1>{{ config('app.name', 'Nova') }}</h1>
+                <h1>{{ config('app.name', 'Spark') }}</h1>
             </div>
 
             <p>Hello {{ $user->name ?? 'there' }},</p>
@@ -94,7 +94,7 @@
             <p>If you did not request a password reset, no further action is required and your account remains secure.
             </p>
 
-            <p>Regards,<br>{{ config('app.name', 'Nova') }} Team</p>
+            <p>Regards,<br>{{ config('app.name', 'Spark') }} Team</p>
 
             <div class="footer">
                 <p>If you're having trouble clicking the "Reset Password" button, copy and paste the URL below into your

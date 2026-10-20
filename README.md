@@ -2,6 +2,8 @@
 
 A clean, minimal starter kit for **TinyMVC / Spark**, built with **Blade, Alpine.js, FireLine, Tailwind CSS 4, and daisyUI 5**.
 
+Nova is the starter package name. The included interface uses **Spark by TinyMVC** branding.
+
 ## Features
 
 - **Authentication** — registration, sign-in, remember me, logout, and password recovery.
@@ -29,11 +31,16 @@ Reusable Blade components are included in `resources/views/components`.
 Requires PHP 8.2+, Composer, PDO SQLite (or MySQL), and Node.js 20.19+ or 22.12+.
 
 ```sh
-composer setup
+composer create-project tinymvc/nova tinyapp
+cd tinyapp
+npm install
+npm run build
 php spark serve
 ```
 
-Setup installs dependencies, creates `.env`, generates the application key, prepares the database, and builds assets. Open [localhost:8080](http://localhost:8080) and create an account.
+Composer installs PHP dependencies, creates `.env`, generates the application key, and runs database migrations and seeders. The npm commands install and build the frontend assets. Open [localhost:8080](http://localhost:8080) and create an account.
+
+For a fresh source checkout, run `composer setup` to install dependencies, prepare the application, and build assets, then run `php spark serve`.
 
 Application, database, and email settings are configured in `.env`. Password reset emails are logged to `storage/logs` by default. For email delivery, set `MAIL_TRANSPORT=smtp` and configure the `MAIL_*` settings.
 

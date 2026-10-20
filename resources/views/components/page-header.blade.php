@@ -1,11 +1,11 @@
 @props(['title', 'description' => null])
 
 <div
-    {{ $attributes->class(['flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 pb-4 border-b border-base-200']) }}>
+    {{ $attributes->class(['flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 mb-8']) }}>
     <div>
-        <h1 class="text-2xl lg:text-3xl font-bold tracking-tight text-base-content">{{ $title }}</h1>
+        <h1 data-page-heading tabindex="-1" class="page-title">{{ $title }}</h1>
         @if ($description)
-            <p class="mt-1 text-sm text-base-content/70">{{ $description }}</p>
+            <p class="mt-2 text-sm muted">{{ $description }}</p>
         @endif
     </div>
 

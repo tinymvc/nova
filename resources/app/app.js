@@ -5,15 +5,15 @@ import FireLine from "fireline";
 Alpine.plugin(FireLine);
 
 Object.assign(window.FireLine.settings, {
-    targetEl: "#app > div",
-    focusOnError: true,
-    progressBar: true,
-    progressColor: "#635bce",
+  targetEl: "#app > div",
+  focusOnError: true,
+  progressBar: true,
+  progressColor: "#1a1a1a",
 });
 
 document.addEventListener("fireNavigate", () => {
-    // Move keyboard and screen-reader focus to the newly rendered page.
-    document.querySelector("[data-page-heading]")?.focus({ preventScroll: true });
+  // Move keyboard and screen-reader focus to the newly rendered page.
+  document.querySelector("[data-page-heading]")?.focus({ preventScroll: true });
 });
 
 window.Alpine = Alpine;

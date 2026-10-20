@@ -12,6 +12,38 @@
 @endphp
 
 @switch($name)
+    @case('flame')
+        <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 320"
+            fill="currentColor" {{ $attributes->merge(['class' => "$iconSize $class"]) }}>
+            <path fill-rule="evenodd"
+                d="M146 18C174 84 126 120 153 163C171 190 198 203 207 231C222 272 191 307 148 311C173 290 176 267 160 246C148 230 130 218 127 198C109 222 90 240 92 259C94 281 111 298 132 312C86 312 47 283 43 244C36 194 75 154 102 114C126 79 140 46 146 18Z" />
+        </svg>
+    @break
+
+    @case('rocket-launch')
+        <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.5" {{ $attributes->merge(['class' => "$iconSize $class"]) }}>
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2M12 15l-3-3a22 22 0 0 1 3-5c2.8-3.26 8-4 9-4 0 1-.74 6.2-4 9a22 22 0 0 1-5 3ZM9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0m1 7v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
+            <circle cx="16" cy="8" r="1.5" />
+        </svg>
+    @break
+
+    @case('arrow-up-right')
+        <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.5" {{ $attributes->merge(['class' => "$iconSize $class"]) }}>
+            <path d="M7 17 17 7M7 7h10v10" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    @break
+
+    @case('book-open')
+        <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.5" {{ $attributes->merge(['class' => "$iconSize $class"]) }}>
+            <path d="M12 6v15m0-15C9 3 5 3 3 4v15c3-1 6-1 9 2m0-15c3-3 7-3 9-2v15c-3-1-6-1-9 2"
+                stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    @break
+
     @case('arrow-left')
         <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="1.5" {{ $attributes->merge(['class' => "$iconSize $class"]) }}>

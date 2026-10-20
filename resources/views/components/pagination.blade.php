@@ -1,14 +1,14 @@
 @props(['paginator'])
 
 @if (isset($paginator) && $paginator->hasPages())
-    <div {{ $attributes->class(['flex flex-col sm:flex-row items-center justify-between gap-4 py-3']) }}>
-        <div class="text-xs text-base-content/70">
+    <nav aria-label="Pagination" {{ $attributes->class(['flex flex-col sm:flex-row items-center justify-between gap-4 py-4']) }}>
+        <div class="text-xs muted">
             Showing <span class="font-semibold text-base-content">{{ $paginator->firstItem() }}</span> to <span
                 class="font-semibold text-base-content">{{ $paginator->lastItem() }}</span> of <span
                 class="font-semibold text-base-content">{{ $paginator->total() }}</span> results
         </div>
 
-        <div class="join">
+        <div class="flex gap-1">
             {{-- Previous Page Link --}}
             @if ($paginator->onFirstPage())
                 <button class="join-item btn btn-sm btn-disabled" disabled aria-label="Previous">
@@ -63,5 +63,5 @@
                 </button>
             @endif
         </div>
-    </div>
+    </nav>
 @endif

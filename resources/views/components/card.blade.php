@@ -2,7 +2,7 @@
     'title' => null,
     'subtitle' => null,
     'bordered' => true,
-    'shadow' => 'sm',
+    'shadow' => 'none',
     'bodyClass' => '',
 ])
 
@@ -18,18 +18,18 @@
 
 <div
     {{ $attributes->class([
-        'card bg-base-100 transition-all duration-200',
-        'card-bordered border-base-200' => (bool) $bordered,
+        'card bg-base-100 rounded-xl',
+        'border border-base-300' => (bool) $bordered,
         $shadowClasses[$shadow] ?? 'shadow-sm',
     ]) }}>
     <div class="card-body p-6 {{ $bodyClass }}">
         @if ($title || $subtitle)
             <div class="mb-4">
                 @if ($title)
-                    <h3 class="card-title text-lg font-bold text-base-content">{{ $title }}</h3>
+                    <h3 class="text-sm font-semibold text-base-content">{{ $title }}</h3>
                 @endif
                 @if ($subtitle)
-                    <p class="text-xs text-base-content/60 mt-0.5">{{ $subtitle }}</p>
+                    <p class="text-[13px] muted mt-1">{{ $subtitle }}</p>
                 @endif
             </div>
         @endif

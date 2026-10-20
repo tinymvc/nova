@@ -5,11 +5,11 @@
 ])
 
 <label @if ($for) for="{{ $for }}" @endif
-    {{ $attributes->class(['label py-1 block text-sm font-medium text-base-content']) }}>
-    <span class="label-text flex items-center gap-1 font-semibold">
+    {{ $attributes->class(['field-label text-base-content']) }}>
+    <span class="flex items-center gap-1">
         {{ $value ?? $slot }}
         @if ($required)
-            <span class="text-error font-bold" title="Required">*</span>
+            <span class="text-error-content" title="Required">*</span>
         @endif
     </span>
 </label>

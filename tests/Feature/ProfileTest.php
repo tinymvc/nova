@@ -27,7 +27,7 @@ final class ProfileTest extends TestCase
         $response = $this->actingAs($user)->get('/profile');
 
         $response->assertOk()
-            ->assertSee('Profile Settings')
+            ->assertSee('Account settings')
             ->assertSee('Garrus Vakarian')
             ->assertSee('garrus@normandy.com');
     }

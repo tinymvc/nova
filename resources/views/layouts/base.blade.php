@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="nova">
+<html lang="en" data-theme="spark">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#f6f6f4">
-    <meta name="description" content="Nova — a thoughtful starting point for your next TinyMVC / Spark application.">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="description" content="Spark by TinyMVC — simple tools, clean code, real projects.">
     <title>@yield('title')</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     @vite('app.js')

@@ -26,7 +26,7 @@ final class DashboardTest extends TestCase
         $response = $this->actingAs($user)->get('/dashboard');
 
         $response->assertOk()
-            ->assertSee('A fresh perspective.')
+            ->assertSee('Overview')
             ->assertSee('Total projects')
             ->assertSee('Your projects');
     }

@@ -1,6 +1,6 @@
 @props(['action', 'method' => 'POST'])
 <form action="{{ $action }}" method="{{ strtoupper($method) === 'GET' ? 'GET' : 'POST' }}" x-data="{ form: $form() }"
-    x-form {{ $attributes->class(['space-y-5']) }}>
+    x-form {{ $attributes->class(['flex flex-col gap-5']) }}>
     @if (strtoupper($method) !== 'GET')
         @csrf
     @endif

@@ -16,17 +16,16 @@
     $currentValue = old($name, $selected);
 @endphp
 
-<div class="form-control w-full mb-3">
+<div class="w-full">
     @if ($label)
         <x-label :for="$selectId" :value="$label" :required="$required" />
     @endif
 
     <select name="{{ $name }}" id="{{ $selectId }}" @required($required) @disabled($disabled)
-        {{ $attributes->class([
-            'select select-bordered w-full transition-colors',
-            'select-error border-error focus:border-error focus:ring-error' => $hasError,
-            'focus:border-primary focus:ring-primary' => !$hasError,
-        ]) }}>
+        aria-describedby="{{ $selectId }}-error{{ $help ? ' ' . $selectId . '-help' : '' }}"
+        aria-invalid="{{ $hasError ? 'true' : 'false' }}"
+        :aria-invalid="$data.form?.status ? !!$data.form?.hasError({{ json_encode($name) }}) : {{ $hasError ? 'true' : 'false' }}"
+        {{ $attributes->class(['select w-full h-11']) }}>
         @if ($placeholder)
             <option value="" disabled @selected($currentValue === null || $currentValue === '')>
                 {{ $placeholder }}
@@ -47,9 +46,9 @@
         {{ $slot }}
     </select>
 
-    @if ($help && !$hasError)
-        <x-help :text="$help" />
+    @if ($help)
+        <x-help :text="$help" :id="$selectId . '-help'" />
     @endif
 
-    <x-error :field="$name" />
+    <x-error :field="$name" :id="$selectId . '-error'" />
 </div>

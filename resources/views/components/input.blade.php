@@ -18,7 +18,7 @@
 @endphp
 <div class="w-full" @if ($type === 'password') x-data="{ showPassword: false }" @endif>
     @if ($label)
-        <label for="{{ $inputId }}" class="block text-xs font-medium mb-2">{{ $label }}</label>
+        <label for="{{ $inputId }}" class="field-label">{{ $label }}</label>
     @endif
     <div class="relative">
         <input type="{{ $type }}"
@@ -41,7 +41,7 @@
         @endif
     </div>
     @if ($help)
-        <p id="{{ $inputId }}-help" class="text-[11px] muted mt-2 leading-5">{{ $help }}</p>
+        <p id="{{ $inputId }}-help" class="text-xs muted mt-2 leading-5">{{ $help }}</p>
     @endif
     <x-error :field="$name" :id="$inputId . '-error'" />
 </div>

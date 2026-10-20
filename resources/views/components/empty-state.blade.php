@@ -5,15 +5,15 @@
 ])
 
 <div
-    {{ $attributes->class(['flex flex-col items-center justify-center text-center p-8 lg:p-12 border-2 border-dashed border-base-300 rounded-2xl bg-base-100/50']) }}>
-    <div class="w-14 h-14 rounded-full bg-base-200/80 flex items-center justify-center text-base-content/50 mb-4">
+    {{ $attributes->class(['flex flex-col items-center justify-center text-center px-6 py-16']) }}>
+    <div class="icon-tile !w-12 !h-12 mb-5">
         <x-icon :name="$icon" size="lg" />
     </div>
 
-    <h4 class="text-base font-bold text-base-content">{{ $title }}</h4>
+    <h3 class="text-sm font-semibold text-base-content">{{ $title }}</h3>
 
     @if ($description)
-        <p class="text-sm text-base-content/60 max-w-sm mt-1 mb-5">{{ $description }}</p>
+        <p class="text-[13px] muted leading-6 max-w-72 mt-2">{{ $description }}</p>
     @endif
 
     @if (!empty(trim($slot)))
