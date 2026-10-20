@@ -9,7 +9,7 @@ if (!$storage) {
 return [
     'app' => [
         'debug' => false,
-        'key' => '70e313f57a932c7388cae00b80a11912',
+        'key' => str_repeat('a', 32),
         'timezone' => 'UTC',
         'url' => 'http://localhost:8080',
         'storage_dir' => $storage,

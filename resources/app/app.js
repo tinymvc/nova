@@ -1,4 +1,3 @@
-import "./app.css";
 import Alpine from "alpinejs";
 import FireLine from "fireline";
 
@@ -13,7 +12,8 @@ Object.assign(window.FireLine.settings, {
 
 document.addEventListener("fireNavigate", () => {
   // Move keyboard and screen-reader focus to the newly rendered page.
-  document.querySelector("[data-page-heading]")?.focus({ preventScroll: true });
+  const page = document.querySelector("[data-page-heading]");
+  page && page.focus({ preventScroll: true });
 });
 
 window.Alpine = Alpine;

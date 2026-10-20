@@ -1,6 +1,7 @@
 <?php
 
 use Spark\Foundation\Application;
+use Spark\Fire\FireMiddleware as Fire;
 
 /**
  * This file is the entry point of the web application.
@@ -26,7 +27,7 @@ return Application::create(path: dirname(__DIR__))
      */
     ->withMiddleware(
         load: __DIR__ . '/middlewares.php',
-        queue: [\Spark\Fire\FireMiddleware::class, 'csrf']
+        queue: [Fire::class, 'csrf']
     )
 
     /**

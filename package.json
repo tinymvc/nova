@@ -8,7 +8,7 @@
     "dependencies": {
         "alpinejs": "^3.15.5",
         "daisyui": "^5.7.50",
-        "fireline": "^2.1.0"
+        "fireline": "^2.1.1"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.1.13",

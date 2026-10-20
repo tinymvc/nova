@@ -27,6 +27,6 @@ abstract class TestCase extends \Spark\Testing\ApplicationTestCase
         parent::setUp();
 
         // Run migrations on the isolated in-memory test database with force = true
-        (new Migration(root_dir('database/migrations')))->up(['force' => true, 'no-seed' => true]);
+        (new Migration(root_dir('database/migrations')))->up();
     }
 }
