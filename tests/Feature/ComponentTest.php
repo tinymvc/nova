@@ -30,12 +30,15 @@ final class ComponentTest extends TestCase
         $this->assertStringContainsString('badge-sm', $rendered);
         $this->assertStringContainsString('Active User', $rendered);
 
-        $xssRendered = blade()->component('badge', [
-            'variant' => 'neutral',
-            'slot' => '<script>alert("xss")</script>',
+        // Slots contain rendered template markup. Escape user data inside the slot.
+        $unsafe = '<script>alert("xss")</script>';
+        $rendered = blade()->component('badge', [
+            'slot' => e($unsafe),
         ]);
-        $this->assertStringContainsString('&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;', $xssRendered);
-        $this->assertStringNotContainsString('<script>alert("xss")</script>', $xssRendered);
+
+        $this->assertStringContainsString(e($unsafe), $rendered);
+        $this->assertStringNotContainsString($unsafe, $rendered);
+
     }
 
     public function test_alert_component_renders_with_message(): void

@@ -1,8 +1,4 @@
-@props([
-    'id',
-    'title' => null,
-    'maxWidth' => 'md',
-])
+@props(['id', 'title' => null, 'maxWidth' => 'md'])
 
 @php
     $maxWidthClasses = [
@@ -17,13 +13,10 @@
     ];
 @endphp
 
-<dialog
-    id="{{ $id }}"
-    {{ $attributes->class(['modal modal-bottom sm:modal-middle']) }}
-    x-data
+<dialog id="{{ $id }}" @if ($title) aria-labelledby="{{ $id }}-title" @endif
+    {{ $attributes->class(['modal modal-bottom sm:modal-middle']) }} x-data
     @open-modal.window="if ($event.detail === '{{ $id }}') $el.showModal()"
-    @close-modal.window="if ($event.detail === '{{ $id }}') $el.close()"
->
+    @close-modal.window="if ($event.detail === '{{ $id }}') $el.close()">
     <div class="modal-box {{ $maxWidthClasses[$maxWidth] ?? 'max-w-md' }} p-6 relative">
         <form method="dialog">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-3 top-3" aria-label="Close">
@@ -31,8 +24,9 @@
             </button>
         </form>
 
-        @if($title)
-            <h3 class="text-lg font-bold text-base-content mb-4 pr-8">{{ $title }}</h3>
+        @if ($title)
+            <h2 id="{{ $id }}-title" class="text-xl font-medium tracking-tight mb-4 pr-8">{{ $title }}
+            </h2>
         @endif
 
         <div class="modal-content">

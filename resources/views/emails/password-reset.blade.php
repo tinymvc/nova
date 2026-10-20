@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,11 +14,13 @@
             padding: 0;
             line-height: 1.6;
         }
+
         .wrapper {
             width: 100%;
             background-color: #f4f4f7;
             padding: 30px 0;
         }
+
         .content {
             max-width: 570px;
             margin: 0 auto;
@@ -26,20 +29,24 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             padding: 40px;
         }
+
         .header {
             text-align: center;
             margin-bottom: 25px;
         }
+
         .header h1 {
             color: #22252a;
             font-size: 20px;
             font-weight: 700;
             margin: 0;
         }
+
         .button-wrapper {
             text-align: center;
             margin: 30px 0;
         }
+
         .button {
             display: inline-block;
             background-color: #4f46e5;
@@ -50,6 +57,7 @@
             font-weight: 600;
             font-size: 15px;
         }
+
         .footer {
             margin-top: 30px;
             padding-top: 20px;
@@ -58,12 +66,14 @@
             color: #a8aaaf;
             text-align: center;
         }
+
         .break-word {
             word-break: break-all;
             color: #4f46e5;
         }
     </style>
 </head>
+
 <body>
     <div class="wrapper">
         <div class="content">
@@ -81,15 +91,18 @@
 
             <p>This password reset link will expire in <strong>60 minutes</strong>.</p>
 
-            <p>If you did not request a password reset, no further action is required and your account remains secure.</p>
+            <p>If you did not request a password reset, no further action is required and your account remains secure.
+            </p>
 
             <p>Regards,<br>{{ config('app.name', 'Nova') }} Team</p>
 
             <div class="footer">
-                <p>If you're having trouble clicking the "Reset Password" button, copy and paste the URL below into your web browser:</p>
+                <p>If you're having trouble clicking the "Reset Password" button, copy and paste the URL below into your
+                    web browser:</p>
                 <p><a href="{{ $resetUrl }}" class="break-word">{{ $resetUrl }}</a></p>
             </div>
         </div>
     </div>
 </body>
+
 </html>

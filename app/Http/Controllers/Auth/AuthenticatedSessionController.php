@@ -4,48 +4,30 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use Spark\Facades\Auth;
-use Spark\Facades\Session;
-use Spark\Http\Request;
+use App\Services\AccountService;
 use Spark\Http\Response;
 
 class AuthenticatedSessionController extends Controller
 {
-    /**
-     * Display the login view.
-     */
     public function create(): Response
     {
-        return view('auth.login');
+        return fire('auth.login');
     }
 
-    /**
-     * Handle an incoming authentication request.
-     */
-    public function store(LoginRequest $request): Response
+    public function store(LoginRequest $request, AccountService $accounts): Response
     {
-        $credentials = $request->validated()->only('email', 'password');
-        $remember = $request->boolean('remember');
+        $accounts->authenticate(
+            $request->validated()->only('email', 'password'),
+            $request->boolean('remember'),
+        );
 
-        if (Auth::attempt($credentials, remember: $remember)) {
-            Session::regenerate();
-
-            return redirect(route('dashboard'))->with('status', 'Welcome back!');
-        }
-
-        return back()
-            ->withErrors(['email' => 'These credentials do not match our records.'])
-            ->withInput();
+        return fire()->navigate((string) route('dashboard'))->with('status', 'Welcome back.');
     }
 
-    /**
-     * Destroy an authenticated session.
-     */
-    public function destroy(Request $request): Response
+    public function destroy(AccountService $accounts): Response
     {
-        Auth::logout();
-        Session::invalidate();
+        $accounts->logout();
 
-        return redirect('/')->with('status', 'You have been logged out.');
+        return fire()->navigate((string) route('home'));
     }
 }

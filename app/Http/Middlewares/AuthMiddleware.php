@@ -12,6 +12,10 @@ class AuthMiddleware extends Middleware
      */
     protected function failed(Request $request, array $guards): mixed
     {
+        if (is_fire_js()) {
+            return fire()->navigate((string) route('login'));
+        }
+
         if ($request->expectsJson()) {
             abort(401, 'Unauthenticated.');
         }

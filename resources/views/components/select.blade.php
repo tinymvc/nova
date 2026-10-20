@@ -17,33 +17,28 @@
 @endphp
 
 <div class="form-control w-full mb-3">
-    @if($label)
+    @if ($label)
         <x-label :for="$selectId" :value="$label" :required="$required" />
     @endif
 
-    <select
-        name="{{ $name }}"
-        id="{{ $selectId }}"
-        @required($required)
-        @disabled($disabled)
+    <select name="{{ $name }}" id="{{ $selectId }}" @required($required) @disabled($disabled)
         {{ $attributes->class([
             'select select-bordered w-full transition-colors',
             'select-error border-error focus:border-error focus:ring-error' => $hasError,
             'focus:border-primary focus:ring-primary' => !$hasError,
-        ]) }}
-    >
-        @if($placeholder)
+        ]) }}>
+        @if ($placeholder)
             <option value="" disabled @selected($currentValue === null || $currentValue === '')>
                 {{ $placeholder }}
             </option>
         @endif
 
-        @if(!empty($options))
-            @foreach($options as $key => $optionLabel)
+        @if (!empty($options))
+            @foreach ($options as $key => $optionLabel)
                 @php
                     $val = is_int($key) ? $optionLabel : $key;
                 @endphp
-                <option value="{{ $val }}" @selected((string)$currentValue === (string)$val)>
+                <option value="{{ $val }}" @selected((string) $currentValue === (string) $val)>
                     {{ $optionLabel }}
                 </option>
             @endforeach
@@ -52,7 +47,7 @@
         {{ $slot }}
     </select>
 
-    @if($help && !$hasError)
+    @if ($help && !$hasError)
         <x-help :text="$help" />
     @endif
 

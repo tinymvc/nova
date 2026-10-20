@@ -1,45 +1,28 @@
-@props([
-    'title' => 'Sign In',
-])
-<!DOCTYPE html>
-<html lang="en" data-theme="light">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title }} - {{ config('app.name', 'Nova') }}</title>
-    @vite('app.js')
-</head>
-<body class="min-h-screen bg-base-200/60 text-base-content font-sans antialiased flex flex-col justify-center items-center p-4 selection:bg-primary selection:text-primary-content">
-
-    <div id="app" class="w-full max-w-md">
-        <div>
-            {{-- Header Branding --}}
-            <div class="text-center mb-8">
-                <a href="/" class="inline-flex items-center gap-2.5 font-bold text-2xl tracking-tight text-base-content hover:opacity-90 transition-opacity">
-                    <div class="w-10 h-10 rounded-xl bg-primary text-primary-content flex items-center justify-center font-black shadow-lg shadow-primary/25">
-                        N
-                    </div>
-                    <span>Nova</span>
-                </a>
-                <p class="text-xs text-base-content/60 mt-1 font-medium">TinyMVC / Spark Starter Kit</p>
-            </div>
-
-            {{-- Flash Notifications --}}
-            <x-flash />
-
-            {{-- Card Container --}}
-            <div class="card bg-base-100 shadow-xl border border-base-200/80 rounded-2xl overflow-hidden">
-                <div class="card-body p-6 sm:p-8">
-                    {{ $slot }}
-                </div>
-            </div>
-
-            {{-- Footer info --}}
-            <div class="text-center mt-6 text-xs text-base-content/50">
-                <p>© {{ now()->year }} Nova. Secure & Fast.</p>
-            </div>
+<div class="min-h-svh grid lg:grid-cols-[0.95fr_1.05fr]" {{ $attributes }}>
+    <aside class="auth-art hidden lg:flex flex-col justify-between p-12 xl:px-16 border-r border-base-300">
+        <x-brand />
+        <div class="py-10">
+            <div class="orbit mx-auto mb-16" aria-hidden="true"><span
+                    class="absolute -top-1 left-28 w-3 h-3 rounded-full bg-primary"></span></div>
+            <p class="eyebrow mb-5">Room for your next big idea</p>
+            <p class="text-4xl xl:text-5xl tracking-[-0.05em] leading-[1.15] max-w-md">Great things start<br>with a
+                little <span class="text-primary">spark.</span></p>
+            <p class="muted mt-5 text-sm leading-6 max-w-xs">A clean foundation. A familiar stack. Everything you need to
+                make it your own.</p>
         </div>
-    </div>
-
-</body>
-</html>
+        <p class="text-xs muted">Nova <span class="mx-2 opacity-40">/</span> TinyMVC / Spark</p>
+    </aside>
+    <main id="main-content" class="flex flex-col min-h-svh px-6 sm:px-12">
+        <div class="h-24 flex items-center justify-between lg:justify-end shrink-0">
+            <x-brand class="lg:hidden" />
+            <a href="{{ route('home') }}" x-navigate
+                class="inline-flex items-center gap-2 text-xs muted hover:text-base-content"><x-icon name="arrow-left"
+                    size="xs" /> Back to home</a>
+        </div>
+        <div class="w-full max-w-[390px] mx-auto flex-1 flex flex-col justify-center py-10">
+            <x-flash />
+            {{ $slot }}
+        </div>
+        <p class="text-center text-[11px] muted py-7">Made for a fresh start. Built to be yours.</p>
+    </main>
+</div>

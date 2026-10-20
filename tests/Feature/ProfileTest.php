@@ -64,7 +64,7 @@ final class ProfileTest extends TestCase
             'password' => 'secret1234',
         ]);
 
-        $response = $this->actingAs($user)->patch('/profile', [
+        $response = $this->actingAs($user)->put('/password', [
             'name' => 'Garrus Vakarian',
             'username' => 'archangel',
             'email' => 'garrus@normandy.com',
@@ -88,7 +88,7 @@ final class ProfileTest extends TestCase
             'password' => 'secret1234',
         ]);
 
-        $response = $this->actingAs($user)->patch('/profile', [
+        $response = $this->actingAs($user)->put('/password', [
             'name' => 'Garrus Vakarian',
             'username' => 'archangel',
             'email' => 'garrus@normandy.com',

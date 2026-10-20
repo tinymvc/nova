@@ -4,36 +4,21 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Models\User;
-use Spark\Facades\Auth;
-use Spark\Facades\Session;
+use App\Services\AccountService;
 use Spark\Http\Response;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
     public function create(): Response
     {
-        return view('auth.register');
+        return fire('auth.register');
     }
 
-    /**
-     * Handle an incoming registration request.
-     */
-    public function store(RegisterRequest $request): Response
+    public function store(RegisterRequest $request, AccountService $accounts): Response
     {
-        $user = User::create([
-            'name' => $request->validated()->string('name'),
-            'username' => $request->validated()->string('username'),
-            'email' => $request->validated()->string('email'),
-            'password' => $request->validated()->string('password'),
-        ]);
+        $accounts->register($request->validated());
 
-        Auth::login($user);
-        Session::regenerate();
-
-        return redirect(route('dashboard'))->with('status', 'Welcome to Nova! Your account has been created.');
+        return fire()->navigate((string) route('dashboard'))
+            ->with('status', 'Welcome to Nova. Your account is ready.');
     }
 }

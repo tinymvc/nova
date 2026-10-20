@@ -1,139 +1,51 @@
-<p align="center">
-    <img width="1216" height="415" alt="tinymvc-spark-nova" src="https://github.com/user-attachments/assets/c167c5d0-f946-440a-b5fa-012a63cd7910" />
-</p>
+# Nova
 
-# Nova — TinyMVC / Spark Starter Kit
-
-**Nova** is a modern, production-conscious starter kit for the **TinyMVC / Spark** PHP framework. It provides developers with a robust foundation for building high-performance, server-rendered web applications with interactive client-side behaviors, pre-built accessible UI components, and complete security-hardened authentication.
-
----
-
-## Tech Stack
-
-- **Backend**: [TinyMVC / Spark](https://github.com/tinymvc/tinycore) (`tinymvc/tinycore`) v4.0
-- **Templates**: Spark Blade Template Engine
-- **Styling**: [Tailwind CSS 4](https://tailwindcss.com) + [daisyUI 5](https://daisyui.com)
-- **Client Interactivity**: [Alpine.js 3](https://alpinejs.dev)
-- **SPA-like Transitions**: [FireLine 2.1](https://github.com/tinymvc/fireline-php) (`@tinymvc/fireline-php` & `fireline` npm)
-- **Asset Bundling**: [Vite 7](https://vitejs.dev)
-
----
+A clean, minimal starter kit for **TinyMVC / Spark**, built with **Blade, Alpine.js, FireLine, Tailwind CSS 4, and daisyUI 5**.
 
 ## Features
 
-- **25+ Reusable Blade Components**: Buttons, badges, form inputs with password visibility toggle, cards, modals, confirmation dialogs, dropdowns, alerts, breadcrumbs, tables, pagination, and skeletons.
-- **Complete Authentication Flows**:
-  - Secure sign-in with login rate limiting (`throttle:10,1`).
-  - Session fixation defense (`session()->regenerate()`) and session invalidation at logout.
-  - User registration with unique username/email validation.
-  - Expiring (60 min), single-use password reset links dispatched via email.
-  - Safe generic responses to prevent user enumeration.
-  - Argon2id / Bcrypt password hashing.
-- **Responsive Admin Dashboard**:
-  - Key metric statistic cards with trend tokens.
-  - Demonstration records table with status badges.
-  - Activity stream and interactive project modal.
-  - Accessible mobile drawer and collapsible sidebar.
-- **User Profile Management**:
-  - Name, username, and email updates.
-  - Secure password changes requiring current password verification.
-- **FireLine SPA Navigation**:
-  - Instant page transitions with `x-navigate` on links without full-page reloads.
-- **Automated Testing**:
-  - Comprehensive suite of 33 feature and unit tests with 93 assertions covering authentication, authorization, registration, password resets, profile management, and component rendering.
+- **Authentication** — registration, sign-in, remember me, logout, and password recovery.
+- **Account settings** — update profile details and change passwords.
+- **Projects workspace** — create, edit, delete, search, paginate, and track project status. Each account has its own projects.
+- **Responsive interface** — homepage, authentication screens, dashboard, and account settings with mobile navigation.
+- **Interactive forms** — inline validation, loading indicators, password visibility, and success notices.
+- **Smooth navigation** — FireLine page transitions with browser history support.
+- **Automated tests** — authentication, account settings, projects, validation, and access protection.
 
----
+## UI components
 
-## Quick Start & Installation
+Reusable Blade components are included in `resources/views/components`.
 
-### 1. Requirements
-- PHP 8.2 or higher (with `pdo_sqlite` or MySQL, `curl`, `fileinfo`)
-- Composer
-- Node.js 18+ and npm
+| Category | Components |
+| --- | --- |
+| Layout | Guest, authentication, and app layouts; branding, page headers, breadcrumbs, dividers |
+| Forms | Forms, inputs, textareas, selects, checkboxes, radios, toggles, labels, help text, errors, submit buttons |
+| Display | Buttons, links, cards, tables, badges, avatars, icons, pagination |
+| Feedback | Alerts, flash notices, empty states, loading indicators, skeletons |
+| Interaction | Modals, confirmation dialogs, dropdowns, tooltips |
 
-### 2. Clone and Setup
-```bash
-# Clone the repository
-git clone https://github.com/tinymvc/skeleton.git nova-app
-cd nova-app
+## Getting started
 
-# Run automatic setup (installs Composer packages, copies .env, generates APP_KEY, runs migrations, and builds assets)
+Requires PHP 8.2+, Composer, PDO SQLite (or MySQL), and Node.js 20.19+ or 22.12+.
+
+```sh
 composer setup
-```
-
-Or execute the steps manually:
-```bash
-# 1. Install PHP dependencies
-composer install
-
-# 2. Environment configuration
-cp .env.example .env
-php spark key:generate
-
-# 3. Database migrations
-php spark migrate --seed
-
-# 4. Frontend assets
-npm install
-npm run build
-```
-
-### 3. Start Development Servers
-Run the Spark development server:
-```bash
 php spark serve
 ```
-*(Runs by default at `http://localhost:8080`)*
 
-In a separate terminal, start the Vite development server for hot-reloading:
-```bash
-npm run dev
+Setup installs dependencies, creates `.env`, generates the application key, prepares the database, and builds assets. Open [localhost:8080](http://localhost:8080) and create an account.
+
+Application, database, and email settings are configured in `.env`. Password reset emails are logged to `storage/logs` by default. For email delivery, set `MAIL_TRANSPORT=smtp` and configure the `MAIL_*` settings.
+
+## Commands
+
+```sh
+npm run dev          # Asset hot reload
+npm run build        # Production assets
+php spark migrate    # Database migrations
+php test             # Run tests
 ```
-
----
-
-## Running Tests
-
-Run the complete automated test suite using the Spark test runner:
-```bash
-php test
-```
-Or via composer:
-```bash
-composer test
-```
-
----
-
-## Architecture & Documentation
-
-Nova includes in-depth guides covering design decisions, components, and security mechanisms:
-
-- **[Component Reference](docs/components.md)**: Props, variants, and usage examples for all 25+ Blade components.
-- **[Authentication Guide](docs/authentication.md)**: Complete security architecture, session handling, and reset token lifecycles.
-- **[Architecture & Design Decisions](docs/architecture.md)**: Framework taxonomy, technology choices, and FireLine integration details.
-- **[Implementation Plan](docs/implementation-plan.md)**: Phase-by-phase delivery breakdown and verification report.
-
----
-
-## Available Commands
-
-| Command | Description |
-| --- | --- |
-| `php spark serve` | Starts the local PHP development server |
-| `php spark migrate` | Runs pending database migrations |
-| `php spark migrate:rollback` | Rolls back the latest database migration |
-| `php spark key:generate` | Generates a cryptographically secure 32-character `APP_KEY` |
-| `php test` | Executes the test suite |
-| `npm run dev` | Runs the Vite development server |
-| `npm run build` | Builds optimized production assets |
-
----
-
-## Contributing
-
-Contributions are welcome! Please submit pull requests or report issues to the repository.
 
 ## License
 
-The Nova starter kit is open-source software licensed under the [MIT License](LICENSE).
+Nova is open source under the [MIT License](LICENSE).

@@ -71,7 +71,7 @@ final class PasswordResetTest extends TestCase
 
         DB::table('password_reset_tokens')->insert([
             'email' => 'jane@example.com',
-            'token' => $token,
+            'token' => hash('sha256', $token),
             'created_at' => now()->toDateTimeString(),
         ]);
 
@@ -128,7 +128,7 @@ final class PasswordResetTest extends TestCase
         // Insert token created 2 hours ago (> 60 minutes)
         DB::table('password_reset_tokens')->insert([
             'email' => 'jane@example.com',
-            'token' => $token,
+            'token' => hash('sha256', $token),
             'created_at' => now()->subHours(2)->toDateTimeString(),
         ]);
 
@@ -144,4 +144,68 @@ final class PasswordResetTest extends TestCase
         $user = User::where('email', 'jane@example.com')->first();
         $this->assertTrue(Hash::verify('oldpassword123', $user->password));
     }
+    public function test_generated_reset_links_use_hashed_single_use_tokens(): void
+    {
+        User::create([
+            'name' => 'Nova Builder',
+            'username' => 'builder',
+            'email' => 'builder@example.com',
+            'password' => 'original-password',
+        ]);
+
+        $mail = new class extends \Spark\Utils\Mail {
+            public string $token = '';
+
+            public function send(): bool
+            {
+                preg_match('~/reset-password/([a-zA-Z0-9]+)~', $this->Body, $matches);
+                $this->token = $matches[1] ?? '';
+
+                return true;
+            }
+        };
+
+        app()->instance(\Spark\Utils\Mail::class, $mail);
+
+        $this->post('/forgot-password', ['email' => 'builder@example.com'])->assertStatus(302);
+
+        $record = DB::table('password_reset_tokens')->where('email', 'builder@example.com')->first();
+        $this->assertSame(64, strlen($mail->token));
+        $this->assertSame(hash('sha256', $mail->token), $record->token);
+
+        $data = [
+            'email' => 'builder@example.com',
+            'token' => $mail->token,
+            'password' => 'replacement-password',
+            'password_confirmation' => 'replacement-password',
+        ];
+
+        $this->post('/reset-password', $data)->assertRedirect(route('login'));
+        $this->postJson('/reset-password', $data)->assertJsonValidationErrors('email');
+        $this->assertDatabaseCount('password_reset_tokens', 0);
+    }
+
+    public function test_failed_delivery_does_not_report_success_or_leave_a_token(): void
+    {
+        User::create([
+            'name' => 'Nova Builder',
+            'username' => 'builder',
+            'email' => 'builder@example.com',
+            'password' => 'original-password',
+        ]);
+
+        app()->instance(\Spark\Utils\Mail::class, new class extends \Spark\Utils\Mail {
+            public function send(): bool
+            {
+                return false;
+            }
+        });
+
+        $this->postJson('/forgot-password', ['email' => 'builder@example.com'], ['X-FireLine' => '1'])
+            ->assertStatus(503)
+            ->assertJsonPath('status', 'error');
+
+        $this->assertDatabaseCount('password_reset_tokens', 0);
+    }
+
 }

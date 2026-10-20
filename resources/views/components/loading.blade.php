@@ -33,9 +33,10 @@
     ];
 @endphp
 
-<span {{ $attributes->class([
-    'loading',
-    $typeClasses[$type] ?? 'loading-spinner',
-    $sizeClasses[$size] ?? 'loading-md',
-    $color ? ($colorClasses[$color] ?? '') : '',
-]) }}></span>
+<span
+    {{ $attributes->class([
+        'loading',
+        $typeClasses[$type] ?? 'loading-spinner',
+        $sizeClasses[$size] ?? 'loading-md',
+        $color ? $colorClasses[$color] ?? '' : '',
+    ]) }}></span>

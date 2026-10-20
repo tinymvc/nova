@@ -1,7 +1,4 @@
-@props([
-    'text',
-    'position' => 'top',
-])
+@props(['text', 'position' => 'top'])
 
 @php
     $positionClasses = [
@@ -12,9 +9,7 @@
     ];
 @endphp
 
-<div data-tip="{{ $text }}" {{ $attributes->class([
-    'tooltip',
-    $positionClasses[$position] ?? 'tooltip-top',
-]) }}>
+<div data-tip="{{ $text }}"
+    {{ $attributes->class(['tooltip', $positionClasses[$position] ?? 'tooltip-top']) }}>
     {{ $slot }}
 </div>

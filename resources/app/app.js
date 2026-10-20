@@ -1,16 +1,20 @@
 import "./app.css";
-
 import Alpine from "alpinejs";
 import FireLine from "fireline";
-import axios from "axios";
 
-window.Alpine = Alpine;
-
-window.axios = axios;
-window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
-
-// Register FireLine plugin with Alpine
 Alpine.plugin(FireLine);
 
-// Start Alpine
+Object.assign(window.FireLine.settings, {
+    targetEl: "#app > div",
+    focusOnError: true,
+    progressBar: true,
+    progressColor: "#635bce",
+});
+
+document.addEventListener("fireNavigate", () => {
+    // Move keyboard and screen-reader focus to the newly rendered page.
+    document.querySelector("[data-page-heading]")?.focus({ preventScroll: true });
+});
+
+window.Alpine = Alpine;
 Alpine.start();

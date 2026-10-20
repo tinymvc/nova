@@ -15,10 +15,12 @@
     ];
 @endphp
 
-@for($i = 0; $i < $count; $i++)
-    <div {{ $attributes->class([
-        'skeleton animate-pulse bg-base-300/60',
-        $typeClasses[$type] ?? 'h-32 w-full rounded-xl',
-        'mb-2' => $count > 1,
-    ]) }}></div>
+@for ($i = 0; $i < $count; $i++)
+    <div
+        {{ $attributes->class([
+            'skeleton animate-pulse bg-base-300/60',
+            $typeClasses[$type] ?? 'h-32 w-full rounded-xl',
+            'mb-2' => $count > 1,
+        ]) }}>
+    </div>
 @endfor

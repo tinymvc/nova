@@ -2,53 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PasswordUpdateRequest;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
+use App\Services\AccountService;
 use Spark\Facades\Auth;
-use Spark\Facades\Hash;
-use Spark\Http\Request;
 use Spark\Http\Response;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request): Response
+    public function edit(): Response
     {
-        return view('profile.edit', [
-            'user' => Auth::user(),
+        return fire('profile.edit', [
+            'user' => User::findOrFail(Auth::id()),
         ]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
     public function update(ProfileUpdateRequest $request): Response
     {
-        $user = \App\Models\User::find(Auth::id());
-        if (!$user) {
-            return back()->withErrors(['general' => 'User not found.']);
+        $user = User::findOrFail(Auth::id());
+
+        if (!$user->fill($request->validated())->save()) {
+            abort(500, 'Unable to save your profile.');
         }
 
-        $user->name = $request->validated()->string('name');
-        $user->username = $request->validated()->string('username');
-        $user->email = $request->validated()->string('email');
+        return fire()->navigate((string) route('profile.edit'))
+            ->with('status', 'Your profile has been updated.');
+    }
 
-        // Check if password change is requested
-        if ($request->filled('password')) {
-            $currentPassword = (string) $request->input('current_password');
+    public function password(PasswordUpdateRequest $request, AccountService $accounts): Response
+    {
+        $accounts->changePassword(User::findOrFail(Auth::id()), $request->validated());
 
-            if (!$currentPassword || !Hash::verify($currentPassword, $user->password)) {
-                return back()
-                    ->withErrors(['current_password' => 'The provided current password does not match our records.'])
-                    ->withInput();
-            }
-
-            $user->password = $request->validated()->string('password');
-        }
-
-        $user->save();
-
-        return back()->with('status', 'Your profile details have been successfully updated.');
+        return fire()->navigate((string) route('profile.edit'))
+            ->with('status', 'Your password has been updated.');
     }
 }

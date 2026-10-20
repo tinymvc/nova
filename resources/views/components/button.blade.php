@@ -11,6 +11,7 @@
 @php
     $variantClasses = [
         'primary' => 'btn-primary',
+        'outline' => 'btn-outline',
         'secondary' => 'btn-secondary',
         'accent' => 'btn-accent',
         'neutral' => 'btn-neutral',
@@ -38,12 +39,8 @@
     ];
 @endphp
 
-<button
-    type="{{ $type }}"
-    {{ $attributes->class($classes) }}
-    @disabled($disabled || $loading)
->
-    @if($loading)
+<button type="{{ $type }}" {{ $attributes->class($classes) }} @disabled($disabled || $loading)>
+    @if ($loading)
         <span class="loading loading-spinner {{ $size === 'xs' ? 'loading-xs' : 'loading-sm' }}"></span>
     @elseif($icon)
         <x-icon :name="$icon" :size="$size === 'xs' ? 'xs' : 'sm'" />

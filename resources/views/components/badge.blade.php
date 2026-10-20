@@ -25,11 +25,12 @@
     ];
 @endphp
 
-<span {{ $attributes->class([
-    'badge font-medium inline-flex items-center gap-1',
-    $variantClasses[$variant] ?? 'badge-neutral',
-    $sizeClasses[$size] ?? 'badge-sm',
-    'badge-outline' => (bool) $outline,
-]) }}>
+<span
+    {{ $attributes->class([
+        'badge font-medium inline-flex items-center gap-1',
+        $variantClasses[$variant] ?? 'badge-neutral',
+        $sizeClasses[$size] ?? 'badge-sm',
+        'badge-outline' => (bool) $outline,
+    ]) }}>
     {{ $slot }}
 </span>

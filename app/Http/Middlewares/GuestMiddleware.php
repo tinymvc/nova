@@ -14,6 +14,10 @@ class GuestMiddleware implements MiddlewareInterface
     public function handle(Request $request, \Closure $next, string $guard = 'default'): mixed
     {
         if (Auth::guard($guard)->check()) {
+            if (is_fire_js()) {
+                return fire()->navigate((string) route('dashboard'));
+            }
+
             if ($request->expectsJson()) {
                 abort(400, 'Already authenticated.');
             }

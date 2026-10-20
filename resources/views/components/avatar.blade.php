@@ -39,13 +39,15 @@
     }
 @endphp
 
-<div {{ $attributes->class([
-    'avatar select-none',
-    ($status ? ($statusClasses[$status] ?? '') : ''),
-    'placeholder' => empty($src),
-]) }}>
-    <div class="{{ $sizeClasses[$size] ?? $sizeClasses['md'] }} {{ $shapeClasses[$shape] ?? 'rounded-full' }} {{ empty($src) ? 'bg-primary text-primary-content font-bold' : '' }}">
-        @if(!empty($src))
+<div
+    {{ $attributes->class([
+        'avatar select-none',
+        $status ? $statusClasses[$status] ?? '' : '',
+        'avatar-placeholder' => empty($src),
+    ]) }}>
+    <div
+        class="{{ $sizeClasses[$size] ?? $sizeClasses['md'] }} {{ $shapeClasses[$shape] ?? 'rounded-full' }} {{ empty($src) ? 'bg-secondary text-primary font-medium' : '' }}">
+        @if (!empty($src))
             <img src="{{ $src }}" alt="{{ $name ?? 'Avatar' }}" loading="lazy" />
         @else
             <span>{{ $initials ?: '?' }}</span>

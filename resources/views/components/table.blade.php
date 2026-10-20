@@ -6,15 +6,12 @@
 ])
 
 <div class="overflow-x-auto w-full border border-base-200 rounded-lg">
-    <table {{ $attributes->class([
-        'table w-full',
-        'table-zebra' => (bool) $striped,
-        'table-sm' => (bool) $compact,
-    ]) }}>
-        @if(!empty($headers))
+    <table
+        {{ $attributes->class(['table w-full', 'table-zebra' => (bool) $striped, 'table-sm' => (bool) $compact]) }}>
+        @if (!empty($headers))
             <thead class="bg-base-200/50 text-base-content/80 text-xs uppercase font-semibold">
                 <tr>
-                    @foreach($headers as $header)
+                    @foreach ($headers as $header)
                         <th>{{ $header }}</th>
                     @endforeach
                 </tr>
