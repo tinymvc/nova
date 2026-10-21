@@ -5,32 +5,35 @@ namespace App\Services;
 use App\Exceptions\PasswordResetDeliveryException;
 use App\Models\User;
 use RuntimeException;
-use Spark\Facades\DB;
-use Spark\Facades\Mail;
+use Spark\Carbon;
+use Spark\Facades\{DB, Mail};
 use Spark\Foundation\Exceptions\ValidationException;
+use Spark\Hash;
 use Spark\Http\Input;
-use Spark\Support\Str;
 use Throwable;
 
 class PasswordResetService
 {
     public function sendLink(string $email): void
     {
-        $user = User::where('email', $email)->first();
+        $user = User::where('email', $email)
+            ->first();
 
         if (!$user) {
             return;
         }
 
-        $token = Str::random(64);
-        $digest = hash('sha256', $token);
+        $digest = hash('sha256', $token = Hash::random(32));
 
         DB::transaction(function () use ($email, $digest): void {
-            DB::table('password_reset_tokens')->where('email', $email)->delete();
+            DB::table('password_reset_tokens')
+                ->where('email', $email)
+                ->delete();
+
             DB::table('password_reset_tokens')->insert([
                 'email' => $email,
                 'token' => $digest,
-                'created_at' => now()->toDateTimeString(),
+                'created_at' => now(),
             ]);
         });
 
@@ -62,16 +65,18 @@ class PasswordResetService
     public function reset(Input $data): void
     {
         DB::transaction(function () use ($data): void {
-            $email = $data->string('email');
             $digest = hash('sha256', $data->string('token'));
-            $record = DB::table('password_reset_tokens')->where('email', $email)->first();
-            $user = User::where('email', $email)->first();
+            $record = DB::table('password_reset_tokens')
+                ->where('email', $email = $data->email())
+                ->first();
+
+            $user = User::where('email', $email)
+                ->first();
 
             if (
-                !$record
-                || !$user
-                || !hash_equals($record->token, $digest)
-                || carbon($record->created_at)->addMinutes(60)->isPast()
+                !$record || !$user
+                || !Hash::equals($record->token, $digest)
+                || Carbon::parse($record->created_at)->addMinutes(60)->isPast()
             ) {
                 throw ValidationException::withMessages([
                     'email' => ['This reset link is invalid or has expired. Please request a new one.'],
@@ -90,10 +95,12 @@ class PasswordResetService
                 ]);
             }
 
-            $user->password = $data->string('password');
-            $user->remember_token = Str::random(60);
+            $saved = $user->update([
+                'password' => $data->password(hash: true),
+                'remember_token' => Hash::random(32),
+            ]);
 
-            if (!$user->save()) {
+            if (!$saved) {
                 throw new RuntimeException('Unable to reset your password.');
             }
         });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
 use Spark\Facades\Auth;
+use Spark\Fire\Fire;
 use Spark\Http\Response;
 
 class ProjectController extends Controller
@@ -15,7 +16,7 @@ class ProjectController extends Controller
             'user_id' => Auth::id(),
         ]));
 
-        return fire()->navigate((string) route('dashboard'))
+        return Fire::navigate(route('dashboard'))
             ->with('status', 'Project created. Make something great.');
     }
 
@@ -27,7 +28,7 @@ class ProjectController extends Controller
             abort(500, 'Unable to delete this project.');
         }
 
-        return fire()->navigate((string) route('dashboard'))
+        return Fire::navigate(route('dashboard'))
             ->with('status', 'Project deleted.');
     }
 
@@ -39,7 +40,7 @@ class ProjectController extends Controller
             abort(500, 'Unable to update this project.');
         }
 
-        return fire()->navigate((string) route('dashboard'))
+        return Fire::navigate(route('dashboard'))
             ->with('status', 'Project updated. Keep the momentum going.');
     }
 }

@@ -3,14 +3,16 @@
 namespace App\Services;
 
 use App\Models\User;
-use RuntimeException;
-use Spark\Facades\Auth;
-use Spark\Facades\DB;
-use Spark\Facades\Hash;
-use Spark\Facades\Session;
+use App\Http\Controllers\Auth\{
+    AuthenticatedSessionController,
+    NewPasswordController,
+    RegisteredUserController
+};
+use Spark\Facades\{Auth, DB, Hash, Route, Session};
 use Spark\Foundation\Exceptions\ValidationException;
 use Spark\Http\Input;
-use Spark\Support\Str;
+use RuntimeException;
+use function in_array;
 
 class AccountService
 {
@@ -44,10 +46,12 @@ class AccountService
         }
 
         DB::transaction(function () use ($user, $data): void {
-            $user->password = $data->string('password');
-            $user->remember_token = Str::random(60);
+            $saved = $user->update([
+                'password' => $data->password(hash: true),
+                'remember_token' => Hash::random(32),
+            ]);
 
-            if (!$user->save()) {
+            if (!$saved) {
                 throw new RuntimeException('Unable to update your password.');
             }
 
@@ -59,7 +63,42 @@ class AccountService
 
     public function logout(): void
     {
-        Auth::logout();
+        Auth::check() && Auth::logout();
+
         Session::invalidate();
+    }
+
+    public static function routes(): void
+    {
+        Route::group(['middleware' => 'guest'], function () {
+            Route::fire('/login', 'auth.login')
+                ->name('login');
+
+            Route::post('/login', [AuthenticatedSessionController::class, 'store'])
+                ->middleware('throttle:10,1');
+
+            Route::fire('/register', 'auth.register')
+                ->name('register');
+
+            Route::post('/register', [RegisteredUserController::class, 'store'])
+                ->middleware('throttle:10,1');
+
+            Route::fire('/forgot-password', 'auth.forgot-password')
+                ->name('password.request');
+
+            Route::post('/forgot-password', [NewPasswordController::class, 'link'])
+                ->name('password.email')
+                ->middleware('throttle:5,1');
+
+            Route::get('/reset-password/{token}', [NewPasswordController::class, 'request'])
+                ->name('password.reset');
+
+            Route::post('/reset-password', [NewPasswordController::class, 'reset'])
+                ->name('password.update')
+                ->middleware('throttle:10,1');
+        });
+
+        Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+            ->name('logout');
     }
 }

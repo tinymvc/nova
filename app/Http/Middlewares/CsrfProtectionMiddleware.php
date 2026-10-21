@@ -2,6 +2,7 @@
 
 namespace App\Http\Middlewares;
 
+use Spark\Facades\App;
 use Spark\Foundation\Http\Middlewares\CsrfProtection as Middleware;
 use Spark\Http\Request;
 
@@ -21,7 +22,7 @@ class CsrfProtectionMiddleware extends Middleware
     public function handle(Request $request, \Closure $next): mixed
     {
         // Bypass CSRF in testing environment unless explicitly enabled
-        if (app()->isTesting() && empty($request->header('X-Enable-Csrf'))) {
+        if (App::isTesting() && empty($request->header('X-Enable-Csrf'))) {
             return $next($request);
         }
 

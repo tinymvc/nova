@@ -3,6 +3,8 @@ import path from "path";
 import tailwindcss from "@tailwindcss/vite";
 import fullReload from "vite-plugin-full-reload";
 
+const resolvePath = (relativePath) => path.resolve(__dirname, relativePath);
+
 const cors = ({ appUrl }) => ({
   origin: [
     appUrl.replace(/\/+$/, ""),
@@ -11,36 +13,36 @@ const cors = ({ appUrl }) => ({
   ],
 });
 
-export default defineConfig(({ mode }) => {
+const viteAppUrl = (mode) => {
   const env = loadEnv(mode, __dirname); // default prefix = VITE_ only
-  const appUrl = env.VITE_APP_URL || "http://localhost:8080";
+  return env.VITE_APP_URL || "http://localhost:8080";
+};
 
-  return {
-    plugins: [tailwindcss(), fullReload(["./resources/views/**/*.blade.php"])],
-    base: mode === "production" ? "/build/" : "/",
-    root: path.resolve(__dirname, "./resources/app"),
-    envDir: __dirname, // frontend import.meta.env reads .env from project root
-    server: {
-      strictPort: true,
-      port: 5173,
-      origin: "http://localhost:5173",
-      cors: cors({ appUrl }),
+export default defineConfig(({ mode }) => ({
+  plugins: [tailwindcss(), fullReload(["./resources/views/**/*.blade.php"])],
+  root: resolvePath("./resources/app"),
+  server: {
+    strictPort: true,
+    port: 5173,
+    origin: "http://localhost:5173",
+    cors: cors({ appUrl: viteAppUrl(mode) }),
+  },
+  build: {
+    outDir: resolvePath("./public/build"),
+    emptyOutDir: true,
+    manifest: true,
+    rollupOptions: {
+      input: [
+        resolvePath("./resources/app/app.js"),
+        resolvePath("./resources/app/app.css"),
+      ],
     },
-    build: {
-      outDir: path.resolve(__dirname, "./public/build"),
-      emptyOutDir: true,
-      manifest: true,
-      rollupOptions: {
-        input: [
-          path.resolve(__dirname, "./resources/app/app.js"),
-          path.resolve(__dirname, "./resources/app/app.css"),
-        ],
-      },
+  },
+  resolve: {
+    alias: {
+      "@": resolvePath("./resources/app"),
     },
-    resolve: {
-      alias: {
-        "@": path.resolve(__dirname, "./resources/app"),
-      },
-    },
-  };
-});
+  },
+  base: mode === "production" ? "/build/" : "/",
+  envDir: __dirname, // frontend import.meta.env reads .env from project root
+}));

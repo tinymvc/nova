@@ -4,6 +4,7 @@ namespace App\Http\Middlewares;
 
 use Spark\Contracts\Http\MiddlewareInterface;
 use Spark\Facades\Auth;
+use Spark\Fire\Fire;
 use Spark\Http\Request;
 
 class GuestMiddleware implements MiddlewareInterface
@@ -14,8 +15,8 @@ class GuestMiddleware implements MiddlewareInterface
     public function handle(Request $request, \Closure $next, string $guard = 'default'): mixed
     {
         if (Auth::guard($guard)->check()) {
-            if (is_fire_js()) {
-                return fire()->navigate((string) route('dashboard'));
+            if (Fire::isJs()) {
+                return Fire::navigate(route('dashboard'));
             }
 
             if ($request->expectsJson()) {

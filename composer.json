@@ -5,6 +5,8 @@
     "keywords": [
         "shahinmoyshan",
         "tinymvc",
+        "nova",
+        "starter",
         "tinycore",
         "mvc",
         "web framework",
@@ -15,7 +17,7 @@
     "require": {
         "php": ">=8.2",
         "tinymvc/tinycore": "^4.0",
-        "tinymvc/fireline-php": "dev-main",
+        "tinymvc/fireline-php": "^1.0",
         "phpmailer/phpmailer": "^6.9"
     },
     "authors": [
@@ -31,7 +33,7 @@
     },
     "suggest": {
         "league/commonmark": "Required to use Str::markdown() and Stringable::markdown() (^2.6).",
-        "voku/portable-ascii": "Required to use on Str::slug() with non-english strings (^2.0).,",
+        "voku/portable-ascii": "Required to use on Str::slug() with non-english strings (^2.0).",
         "ramsey/uuid": "Required to use Str::uuid() (^4.7).",
         "ext-curl": "Required for the HTTP client.",
         "ext-fileinfo": "Required for upload and file MIME detection.",
