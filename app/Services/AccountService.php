@@ -3,12 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Http\Controllers\Auth\{
-    AuthenticatedSessionController,
-    NewPasswordController,
-    RegisteredUserController
-};
-use Spark\Facades\{Auth, DB, Hash, Route, Session};
+use Spark\Facades\{Auth, DB, Hash, Session};
 use Spark\Foundation\Exceptions\ValidationException;
 use Spark\Http\Input;
 use RuntimeException;
@@ -54,7 +49,9 @@ class AccountService
                 throw new RuntimeException('Unable to update your password.');
             }
 
-            DB::table('password_reset_tokens')->where('email', $user->email)->delete();
+            DB::table('password_reset_tokens')
+                ->where('email', $user->email)
+                ->delete();
         });
 
         Session::regenerate();
@@ -65,39 +62,5 @@ class AccountService
         Auth::check() && Auth::logout();
 
         Session::invalidate();
-    }
-
-    public static function routes(): void
-    {
-        Route::group(['middleware' => 'guest'], function () {
-            Route::fire('/login', 'auth.login')
-                ->name('login');
-
-            Route::post('/login', [AuthenticatedSessionController::class, 'store'])
-                ->middleware('throttle:10,1');
-
-            Route::fire('/register', 'auth.register')
-                ->name('register');
-
-            Route::post('/register', [RegisteredUserController::class, 'store'])
-                ->middleware('throttle:10,1');
-
-            Route::fire('/forgot-password', 'auth.forgot-password')
-                ->name('password.request');
-
-            Route::post('/forgot-password', [NewPasswordController::class, 'link'])
-                ->name('password.email')
-                ->middleware('throttle:5,1');
-
-            Route::get('/reset-password/{token}', [NewPasswordController::class, 'request'])
-                ->name('password.reset');
-
-            Route::post('/reset-password', [NewPasswordController::class, 'reset'])
-                ->name('password.update')
-                ->middleware('throttle:10,1');
-        });
-
-        Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
-            ->name('logout');
     }
 }
