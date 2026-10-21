@@ -5,6 +5,17 @@ namespace App\Models;
 use Spark\Database\Model;
 use Spark\Database\QueryBuilder;
 
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property string $name
+ * @property string|null $description
+ * @property string $status
+ * @property \Spark\Carbon $created_at
+ * @property \Spark\Carbon $updated_at
+ * 
+ * @method static QueryBuilder<static> ownedBy(int $userId)
+ */
 class Project extends Model
 {
     public const STATUSES = [

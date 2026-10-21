@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\PasswordResetDeliveryException;
+use App\Jobs\SendResetPasswordJob;
 use App\Models\User;
 use RuntimeException;
 use Spark\Carbon;
@@ -37,12 +38,17 @@ class PasswordResetService
             ]);
         });
 
+        SendResetPasswordJob::dispatch($user->id, $token, $digest);
+    }
+
+    public function sendResetEmail(User $user, string $token, string $digest): void
+    {
         try {
             $sent = Mail::to($user->email, $user->name)
                 ->subject('Reset your Nova password')
                 ->view('emails.password-reset', [
                     'user' => $user,
-                    'resetUrl' => route('password.reset', ['token' => $token, 'email' => $email]),
+                    'resetUrl' => route('password.reset', ['token' => $token, 'email' => $user->email]),
                 ])
                 ->send();
 
@@ -50,11 +56,6 @@ class PasswordResetService
                 throw new RuntimeException('The mail transport did not accept the reset email.');
             }
         } catch (Throwable $exception) {
-            DB::table('password_reset_tokens')
-                ->where('email', $email)
-                ->where('token', $digest)
-                ->delete();
-
             throw new PasswordResetDeliveryException(
                 'Unable to send the reset link. Please try again later.',
                 previous: $exception,

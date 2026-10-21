@@ -12,7 +12,6 @@ use Spark\Facades\{Auth, DB, Hash, Route, Session};
 use Spark\Foundation\Exceptions\ValidationException;
 use Spark\Http\Input;
 use RuntimeException;
-use function in_array;
 
 class AccountService
 {
