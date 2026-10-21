@@ -1,21 +1,17 @@
-@if (!is_fire_js())
-    @extends('layouts.base')
-@endif
-@section('title')
-    Welcome · {{ config('app.name', 'Spark') }}
-@endsection
-
-@section('content')
+<x-fire title="Welcome · {{ config('app.name', 'Spark') }}">
     <x-layouts.guest key="home">
         <section class="w-full max-w-md text-center">
-            <h1 data-page-heading tabindex="-1"><x-brand :stacked="true" /></h1>
-            <p class="muted text-[15px] leading-7 mt-7">A lightweight MVC framework for PHP artisans.<br>Simple tools, clean
-                code, real projects.</p>
+            <h1 data-page-heading tabindex="-1">
+                <x-brand :stacked="true" />
+            </h1>
+            <p class="muted text-[15px] leading-7 mt-7">A lightweight MVC framework for PHP artisans.<br>Simple tools,
+                clean code, real projects.</p>
             <p class="text-xs muted mt-3">Blade <span class="mx-1.5 text-base-content/25">·</span> Alpine.js <span
-                    class="mx-1.5 text-base-content/25">·</span> FireLine <span class="mx-1.5 text-base-content/25">·</span>
-                daisyUI</p>
+                    class="mx-1.5 text-base-content/25">·</span> FireLine <span
+                    class="mx-1.5 text-base-content/25">·</span> daisyUI</p>
             <div class="flex flex-wrap justify-center gap-3 mt-8">
-                <a href="https://tinymvc.github.io" class="btn btn-primary px-5" target="_blank" rel="noopener noreferrer">
+                <a href="https://tinymvc.github.io" class="btn btn-primary px-5" target="_blank"
+                    rel="noopener noreferrer">
                     Documentation <x-icon name="arrow-up-right" size="sm" />
                 </a>
                 <a href="https://github.com/tinymvc/tinycore/tree/main/src" class="btn btn-outline px-5" target="_blank"
@@ -33,8 +29,4 @@
             </nav>
         </section>
     </x-layouts.guest>
-@endsection
-
-@if (is_fire_js())
-    @yield('content')
-@endif
+</x-fire>

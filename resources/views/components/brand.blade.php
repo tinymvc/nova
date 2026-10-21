@@ -3,6 +3,10 @@
     aria-label="Spark by TinyMVC home">
     <x-icon name="flame" class="brand-flame" />
     @if (!$compact)
-        <span class="brand-wordmark">spark<small>BY TINYMVC</small></span>
+        <span class="brand-wordmark">spark
+            @if ($stacked)
+                <small>BY TINYMVC</small>
+            @endif
+        </span>
     @endif
 </a>

@@ -242,10 +242,11 @@
   }
 
   .brand-wordmark small {
-    margin-top: 0.35rem;
-    font-size: 0.4375rem;
-    font-weight: 500;
+    margin-top: -0.08rem;
     letter-spacing: 0.12em;
+    margin-right: -0.16rem;
+    font-size: 0.4325rem;
+    font-weight: 500;
     line-height: 1;
   }
 

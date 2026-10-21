@@ -7,9 +7,8 @@ use App\Jobs\SendResetPasswordJob;
 use App\Models\User;
 use RuntimeException;
 use Spark\Carbon;
-use Spark\Facades\{DB, Mail};
+use Spark\Facades\{DB, Mail, Hash};
 use Spark\Foundation\Exceptions\ValidationException;
-use Spark\Hash;
 use Spark\Http\Input;
 use Throwable;
 

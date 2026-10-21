@@ -145,7 +145,7 @@
                 <div class="px-5 sm:px-6"><x-pagination :paginator="$projects" /></div>
             @else
                 <div class="text-center px-6 py-16 sm:py-20">
-                    <span class="icon-tile !w-12 !h-12 mx-auto mb-5"><x-icon :name="$search ? 'search' : 'folder'" size="lg" /></span>
+                    <span class="icon-tile w-12! h-12! mx-auto mb-5"><x-icon :name="$search ? 'search' : 'folder'" size="lg" /></span>
                     <h3 class="text-sm font-semibold">
                         {{ $search ? 'No matching projects' : 'Your first project starts here' }}</h3>
                     <p class="text-[13px] muted mt-2 leading-6 max-w-72 mx-auto">
