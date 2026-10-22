@@ -40,14 +40,14 @@ class PasswordResetService
         SendResetPasswordJob::dispatch($user->id, $token, $digest);
     }
 
-    public function sendResetEmail(User $user, string $token, string $digest): void
+    public function sendResetEmail(User $user, string $token): void
     {
         try {
             $sent = Mail::to($user->email, $user->name)
                 ->subject('Reset your Nova password')
                 ->view('emails.password-reset', [
                     'user' => $user,
-                    'resetUrl' => route('password.reset', ['token' => $token, 'email' => $user->email]),
+                    'resetUrl' => route('password.reset', ['token' => $token]),
                 ])
                 ->send();
 
@@ -67,31 +67,36 @@ class PasswordResetService
         DB::transaction(function () use ($data): void {
             $digest = hash('sha256', $data->string('token'));
             $record = DB::table('password_reset_tokens')
-                ->where('email', $email = $data->email())
-                ->first();
-
-            $user = User::where('email', $email)
+                ->where('token', $digest)
                 ->first();
 
             if (
-                !$record || !$user
-                || !Hash::equals($record->token, $digest)
+                !$record
                 || Carbon::parse($record->created_at)->addMinutes(60)->isPast()
             ) {
                 throw ValidationException::withMessages([
-                    'email' => ['This reset link is invalid or has expired. Please request a new one.'],
+                    'token' => ['This reset link is invalid or has expired. Please request a new one.'],
+                ]);
+            }
+
+            $user = User::where('email', $record->email)
+                ->first();
+
+            if (!$user) {
+                throw ValidationException::withMessages([
+                    'token' => ['This reset link is invalid or has expired. Please request a new one.'],
                 ]);
             }
 
             // Claim the single-use token before changing the password.
             $claimed = DB::table('password_reset_tokens')
-                ->where('email', $email)
+                ->where('email', $record->email)
                 ->where('token', $digest)
                 ->delete();
 
             if ($claimed !== 1) {
                 throw ValidationException::withMessages([
-                    'email' => ['This reset link has already been used.'],
+                    'token' => ['This reset link has already been used.'],
                 ]);
             }
 

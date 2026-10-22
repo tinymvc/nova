@@ -16,7 +16,7 @@ final class FireLineTest extends TestCase
 
     public function test_guest_pages_return_one_fragment_and_a_title(): void
     {
-        foreach (['/', '/login', '/register', '/forgot-password', '/reset-password/token?email=a@example.com'] as $url) {
+        foreach (['/', '/login', '/register', '/forgot-password', '/reset-password/token'] as $url) {
             $response = $this->get($url, self::HEADERS)->assertOk();
             $html = $response->json('html');
 

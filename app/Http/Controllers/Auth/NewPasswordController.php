@@ -8,7 +8,6 @@ use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Services\PasswordResetService;
 use Spark\Fire\Fire;
-use Spark\Http\Request;
 use Spark\Http\Response;
 
 class NewPasswordController extends Controller
@@ -24,11 +23,10 @@ class NewPasswordController extends Controller
         return Fire::success('If an account exists for that email, a password reset link has been sent.');
     }
 
-    public function request(string $token, Request $request): Response
+    public function request(string $token): Response
     {
         return Fire::render('auth.reset-password', [
             'token' => $token,
-            'email' => $request->query('email', ''),
         ]);
     }
 

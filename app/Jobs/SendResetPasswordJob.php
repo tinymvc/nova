@@ -32,7 +32,7 @@ class SendResetPasswordJob implements JobInterface
             return; // User not found, exit the job gracefully
         }
 
-        $passwordResetService->sendResetEmail($user, $this->token, $this->digest);
+        $passwordResetService->sendResetEmail($user, $this->token);
     }
 
     public function failed(\Throwable $exception): void

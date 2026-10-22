@@ -10,7 +10,6 @@ class ResetPasswordRequest extends FormRequest
     {
         return [
             'token' => 'required|string',
-            'email' => 'required|string|email',
             'password' => 'required|string|min:8|confirmed',
         ];
     }
@@ -19,7 +18,6 @@ class ResetPasswordRequest extends FormRequest
     {
         return [
             'token.required' => 'Password reset token is missing or invalid.',
-            'email.required' => 'Email address is required.',
             'password.required' => 'A new password is required.',
             'password.min' => 'Password must be at least 8 characters long.',
             'password.confirmed' => 'Password confirmation does not match.',

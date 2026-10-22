@@ -5,6 +5,7 @@ namespace Tests\Feature\Auth;
 use App\Models\User;
 use Spark\Facades\DB;
 use Spark\Facades\Hash;
+use Spark\Facades\Queue;
 use Tests\TestCase;
 
 final class PasswordResetTest extends TestCase
@@ -30,7 +31,7 @@ final class PasswordResetTest extends TestCase
             'email' => 'jane@example.com',
         ]);
 
-        $response->assertStatus(302);
+        $response->assertOk()->assertJsonPath('status', 'success');
 
         $record = DB::table('password_reset_tokens')->where('email', 'jane@example.com')->first();
         $this->assertNotNull($record);
@@ -43,7 +44,7 @@ final class PasswordResetTest extends TestCase
             'email' => 'nobody@example.com',
         ]);
 
-        $response->assertStatus(302);
+        $response->assertOk()->assertJsonPath('status', 'success');
 
         $record = DB::table('password_reset_tokens')->where('email', 'nobody@example.com')->first();
         $this->assertNull($record);
@@ -51,15 +52,24 @@ final class PasswordResetTest extends TestCase
 
     public function test_reset_password_screen_can_be_rendered(): void
     {
-        $response = $this->get('/reset-password/sample-token?email=jane@example.com');
+        $response = $this->get('/reset-password/sample-token');
 
         $response->assertOk()
             ->assertSee('Reset Password')
-            ->assertSee('sample-token');
+            ->assertSee('sample-token')
+            ->assertDontSee('name="email"')
+            ->assertDontSee('Email address');
     }
 
     public function test_password_can_be_reset_with_valid_token(): void
     {
+        User::create([
+            'name' => 'Other User',
+            'username' => 'other',
+            'email' => 'other@example.com',
+            'password' => 'other-password',
+        ]);
+
         $user = User::create([
             'name' => 'Jane Doe',
             'username' => 'janedoe',
@@ -77,7 +87,6 @@ final class PasswordResetTest extends TestCase
 
         $response = $this->post('/reset-password', [
             'token' => $token,
-            'email' => 'jane@example.com',
             'password' => 'brandnewpassword',
             'password_confirmation' => 'brandnewpassword',
         ]);
@@ -86,6 +95,9 @@ final class PasswordResetTest extends TestCase
 
         $user = User::where('email', 'jane@example.com')->first();
         $this->assertTrue(Hash::verify('brandnewpassword', $user->password));
+
+        $other = User::where('email', 'other@example.com')->first();
+        $this->assertTrue(Hash::verify('other-password', $other->password));
 
         // Single-use token must be deleted
         $record = DB::table('password_reset_tokens')->where('email', 'jane@example.com')->first();
@@ -101,14 +113,13 @@ final class PasswordResetTest extends TestCase
             'password' => 'oldpassword123',
         ]);
 
-        $response = $this->post('/reset-password', [
+        $response = $this->postJson('/reset-password', [
             'token' => 'invalid-token',
-            'email' => 'jane@example.com',
             'password' => 'brandnewpassword',
             'password_confirmation' => 'brandnewpassword',
         ]);
 
-        $response->assertStatus(302);
+        $response->assertUnprocessable()->assertJsonValidationErrors('token');
 
         $user = User::where('email', 'jane@example.com')->first();
         $this->assertTrue(Hash::verify('oldpassword123', $user->password));
@@ -132,14 +143,13 @@ final class PasswordResetTest extends TestCase
             'created_at' => now()->subHours(2)->toDateTimeString(),
         ]);
 
-        $response = $this->post('/reset-password', [
+        $response = $this->postJson('/reset-password', [
             'token' => $token,
-            'email' => 'jane@example.com',
             'password' => 'brandnewpassword',
             'password_confirmation' => 'brandnewpassword',
         ]);
 
-        $response->assertStatus(302);
+        $response->assertUnprocessable()->assertJsonValidationErrors('token');
 
         $user = User::where('email', 'jane@example.com')->first();
         $this->assertTrue(Hash::verify('oldpassword123', $user->password));
@@ -167,25 +177,40 @@ final class PasswordResetTest extends TestCase
 
         app()->instance(\Spark\Utils\Mail::class, $mail);
 
-        $this->post('/forgot-password', ['email' => 'builder@example.com'])->assertStatus(302);
+        $this->postJson('/forgot-password', ['email' => 'builder@example.com'], ['X-FireLine' => '1'])
+            ->assertOk()
+            ->assertJsonPath('status', 'success');
+
+        Queue::work(once: true, sleep: 0);
 
         $record = DB::table('password_reset_tokens')->where('email', 'builder@example.com')->first();
         $this->assertSame(64, strlen($mail->token));
         $this->assertSame(hash('sha256', $mail->token), $record->token);
+        $this->assertStringNotContainsString('?email=', $mail->Body);
+
+        $page = $this->get('/reset-password/' . $mail->token, ['X-FireLine' => '1'])
+            ->assertOk();
+        $this->assertStringNotContainsString('name="email"', $page->json('html'));
 
         $data = [
-            'email' => 'builder@example.com',
             'token' => $mail->token,
             'password' => 'replacement-password',
             'password_confirmation' => 'replacement-password',
         ];
 
-        $this->post('/reset-password', $data)->assertRedirect(route('login'));
-        $this->postJson('/reset-password', $data)->assertJsonValidationErrors('email');
+        $this->postJson('/reset-password', $data, ['X-FireLine' => '1'])
+            ->assertOk()
+            ->assertJsonPath('navigate', (string) route('login'));
+        $this->postJson('/reset-password', $data, ['X-FireLine' => '1'])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('token');
         $this->assertDatabaseCount('password_reset_tokens', 0);
+
+        $user = User::where('email', 'builder@example.com')->first();
+        $this->assertTrue(Hash::verify('replacement-password', $user->password));
     }
 
-    public function test_failed_delivery_does_not_report_success_or_leave_a_token(): void
+    public function test_failed_queued_delivery_removes_the_token_after_exhausting_retries(): void
     {
         User::create([
             'name' => 'Nova Builder',
@@ -202,10 +227,30 @@ final class PasswordResetTest extends TestCase
         });
 
         $this->postJson('/forgot-password', ['email' => 'builder@example.com'], ['X-FireLine' => '1'])
-            ->assertStatus(503)
-            ->assertJsonPath('status', 'error');
+            ->assertOk()
+            ->assertJsonPath('status', 'success');
+
+        Queue::work(once: true, sleep: 0, tries: 1);
 
         $this->assertDatabaseCount('password_reset_tokens', 0);
+    }
+
+    public function test_reset_still_requires_a_token_and_confirmed_password(): void
+    {
+        $this->postJson('/reset-password', [
+            'password' => 'replacement-password',
+            'password_confirmation' => 'replacement-password',
+        ], ['X-FireLine' => '1'])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('token');
+
+        $this->postJson('/reset-password', [
+            'token' => 'sample-token',
+            'password' => 'replacement-password',
+            'password_confirmation' => 'different-password',
+        ], ['X-FireLine' => '1'])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('password');
     }
 
 }
