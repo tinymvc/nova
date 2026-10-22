@@ -4,9 +4,8 @@
     'description' => null,
 ])
 
-<div
-    {{ $attributes->class(['flex flex-col items-center justify-center text-center px-6 py-16']) }}>
-    <div class="icon-tile !w-12 !h-12 mb-5">
+<div {{ $attributes->class(['flex flex-col items-center justify-center text-center px-6 py-16']) }}>
+    <div class="icon-tile w-12! h-12! mb-5">
         <x-icon :name="$icon" size="lg" />
     </div>
 

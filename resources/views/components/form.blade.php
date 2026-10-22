@@ -8,8 +8,7 @@
         @method($method)
     @endif
     {{ $slot }}
-    <div x-cloak x-show="form.message"
+    <div x-cloak x-show="form.message && form.status !== 'validation'"
         :class="form.status === 'success' ? 'text-success-content bg-success' : 'text-error-content bg-error'"
-        class="rounded-lg px-4 py-3 text-sm" role="status" aria-live="polite"
-        x-text="form.status === 'validation' ? 'Please check the highlighted fields.' : form.message"></div>
+        class="rounded-lg px-4 py-3 text-sm" role="status" aria-live="polite" x-text="form.message"></div>
 </form>

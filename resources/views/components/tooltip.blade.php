@@ -9,7 +9,6 @@
     ];
 @endphp
 
-<div data-tip="{{ $text }}"
-    {{ $attributes->class(['tooltip', $positionClasses[$position] ?? 'tooltip-top']) }}>
+<div data-tip="{{ $text }}" {{ $attributes->class(['tooltip', $positionClasses[$position] ?? 'tooltip-top']) }}>
     {{ $slot }}
 </div>

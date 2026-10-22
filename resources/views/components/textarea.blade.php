@@ -25,7 +25,7 @@
     <textarea name="{{ $name }}" id="{{ $inputId }}" rows="{{ $rows }}"
         @if ($placeholder) placeholder="{{ $placeholder }}" @endif @required($required)
         @disabled($disabled) @readonly($readonly)
-        aria-describedby="{{ $inputId }}-error{{ $help ? ' ' . $inputId . '-help' : '' }}"
+        aria-describedby="{{ $inputId }}-error{{ $help ? " $inputId-help" : '' }}"
         aria-invalid="{{ $hasError ? 'true' : 'false' }}"
         :aria-invalid="$data.form?.status ? !!$data.form?.hasError({{ json_encode($name) }}) : {{ $hasError ? 'true' : 'false' }}"
         {{ $attributes->class(['textarea w-full']) }}>{{ $inputValue }}</textarea>

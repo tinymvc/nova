@@ -1,7 +1,6 @@
 @props(['title', 'description' => null])
 
-<div
-    {{ $attributes->class(['flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 mb-8']) }}>
+<div {{ $attributes->class(['flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 mb-8']) }}>
     <div>
         <h1 data-page-heading tabindex="-1" class="page-title">{{ $title }}</h1>
         @if ($description)

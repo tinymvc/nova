@@ -6,8 +6,7 @@
 ])
 
 <div class="overflow-x-auto w-full border border-base-300 rounded-xl">
-    <table
-        {{ $attributes->class(['table w-full', 'table-zebra' => (bool) $striped, 'table-sm' => (bool) $compact]) }}>
+    <table {{ $attributes->class(['table w-full', 'table-zebra' => (bool) $striped, 'table-sm' => (bool) $compact]) }}>
         @if (!empty($headers))
             <thead>
                 <tr>

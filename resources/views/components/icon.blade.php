@@ -13,8 +13,8 @@
 
 @switch($name)
     @case('flame')
-        <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 320"
-            fill="currentColor" {{ $attributes->merge(['class' => "$iconSize $class"]) }}>
+        <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 320" fill="currentColor"
+            {{ $attributes->merge(['class' => "$iconSize $class"]) }}>
             <path fill-rule="evenodd"
                 d="M146 18C174 84 126 120 153 163C171 190 198 203 207 231C222 272 191 307 148 311C173 290 176 267 160 246C148 230 130 218 127 198C109 222 90 240 92 259C94 281 111 298 132 312C86 312 47 283 43 244C36 194 75 154 102 114C126 79 140 46 146 18Z" />
         </svg>
@@ -39,8 +39,8 @@
     @case('book-open')
         <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="1.5" {{ $attributes->merge(['class' => "$iconSize $class"]) }}>
-            <path d="M12 6v15m0-15C9 3 5 3 3 4v15c3-1 6-1 9 2m0-15c3-3 7-3 9-2v15c-3-1-6-1-9 2"
-                stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M12 6v15m0-15C9 3 5 3 3 4v15c3-1 6-1 9 2m0-15c3-3 7-3 9-2v15c-3-1-6-1-9 2" stroke-linecap="round"
+                stroke-linejoin="round" />
         </svg>
     @break
 

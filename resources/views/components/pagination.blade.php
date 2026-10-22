@@ -1,7 +1,8 @@
 @props(['paginator'])
 
 @if (isset($paginator) && $paginator->hasPages())
-    <nav aria-label="Pagination" {{ $attributes->class(['flex flex-col sm:flex-row items-center justify-between gap-4 py-4']) }}>
+    <nav aria-label="Pagination"
+        {{ $attributes->class(['flex flex-col sm:flex-row items-center justify-between gap-4 py-4']) }}>
         <div class="text-xs muted">
             Showing <span class="font-semibold text-base-content">{{ $paginator->firstItem() }}</span> to <span
                 class="font-semibold text-base-content">{{ $paginator->lastItem() }}</span> of <span

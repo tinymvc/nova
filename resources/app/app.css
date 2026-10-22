@@ -56,10 +56,6 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  [x-cloak] {
-    display: none !important;
-  }
-
   button,
   a,
   input,
@@ -239,15 +235,17 @@
     font-weight: 600;
     letter-spacing: -0.06em;
     line-height: 1;
+    position: relative;
   }
 
   .brand-wordmark small {
-    margin-top: -0.08rem;
     letter-spacing: 0.12em;
-    margin-right: -0.16rem;
-    font-size: 0.4325rem;
+    font-size: 6px;
     font-weight: 500;
     line-height: 1;
+    position: absolute;
+    bottom: -4px;
+    right: 0;
   }
 
   .brand-stacked {
