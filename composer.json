@@ -47,7 +47,9 @@
         ],
         "post-create-project-cmd": [
             "@php spark key:generate",
-            "@php spark migrate --seed"
+            "@php spark migrate --seed",
+            "npm install",
+            "npm run build"
         ],
         "setup": [
             "composer install",
