@@ -16,7 +16,7 @@
     "license": "MIT",
     "require": {
         "php": ">=8.2",
-        "tinymvc/tinycore": "^4.0",
+        "tinymvc/tinycore": "^4.3",
         "tinymvc/fireline-php": "^1.0",
         "phpmailer/phpmailer": "^6.9"
     },
@@ -68,12 +68,5 @@
         "psr-4": {
             "Tests\\": "tests/"
         }
-    },
-    "repositories": [
-        {
-            "name": "fireline",
-            "type": "vcs",
-            "url": "https://github.com/tinymvc/fireline-php"
-        }
-    ]
+    }
 }
